@@ -84,6 +84,12 @@ void SymbolInfo::loadSymbols(HANDLE process_handle_)
 		if(!SymInitialize(process_handle, NULL, TRUE))
 		{
 			DWORD error = GetLastError();
+			if (error==0x8000000d)
+			{
+				// can happen if EXE start takes a bit longer...
+				Sleep(100);
+				continue;
+			}
 			throw SymbolInfoExcep("SymInitialize failed.");
 		}
 
