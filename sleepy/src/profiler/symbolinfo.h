@@ -25,9 +25,6 @@ http://www.gnu.org/copyleft/gpl.html..
 #define __SYMBOLINFO_H_666_
 
 
-#include <string>
-#include <windows.h>
-#include <vector>
 #include "profiler.h"
 
 class Module

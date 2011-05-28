@@ -24,9 +24,7 @@ http://www.gnu.org/copyleft/gpl.html..
 #ifndef __PROCESSINFO_H_666_
 #define __PROCESSINFO_H_666_
 
-#include <windows.h>
 #include "threadinfo.h"
-#include <vector>
 
 /*=====================================================================
 ProcessInfo

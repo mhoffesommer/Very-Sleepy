@@ -23,10 +23,6 @@ http://www.gnu.org/copyleft/gpl.html.
 #ifndef __MYTHREAD_H_666_
 #define __MYTHREAD_H_666_
 
-
-#include <windows.h>
-//#include "mutex.h"
-
 /*=====================================================================
 MyThread
 --------

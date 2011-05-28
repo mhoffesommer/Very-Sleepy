@@ -21,13 +21,12 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 http://www.gnu.org/copyleft/gpl.html.
 =====================================================================*/
+#include <stdafx.h>
 #include "proclist.h"
 
 #include "../utils/stringutils.h"
 #include "sourceview.h"
 #include "database.h"
-#include <fstream>
-#include <algorithm>
 #include "contextmenu.h"
 
 BEGIN_EVENT_TABLE(ProcList, wxListCtrl)

@@ -26,7 +26,6 @@ http://www.gnu.org/copyleft/gpl.html.
 
 #include "profilergui.h"
 #include "processlist.h"
-#include <vector>
 
 // DE: 20090325 Include for list to pick thread(s)
 #include "threadlist.h"

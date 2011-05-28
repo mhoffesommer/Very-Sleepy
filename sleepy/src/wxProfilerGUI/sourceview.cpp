@@ -21,16 +21,14 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 http://www.gnu.org/copyleft/gpl.html.
 =====================================================================*/
+#include <stdafx.h>
 #include "sourceview.h"
 
 
-#include <fstream>
 #include "../utils/stringutils.h"
 #include "mainwin.h"
 //#undef min
 //#undef max
-#include <algorithm>
-#include <wx/mstream.h>
 #include <richedit.h>
 
 BEGIN_EVENT_TABLE(SourceView, wxTextCtrl)

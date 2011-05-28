@@ -24,26 +24,6 @@ http://www.gnu.org/copyleft/gpl.html.
 #ifndef __PROFILERGUI_H_666_
 #define __PROFILERGUI_H_666_
 
-#include <wx/wx.h>
-#include <wx/config.h>
-#include <wx/listctrl.h>
-#include <wx/splitter.h>
-#include <wx/notebook.h>
-#include <wx/aui/aui.h>
-#include <wx/progdlg.h>
-#include <wx/wfstream.h>
-#include <wx/zipstrm.h>
-#include <wx/txtstrm.h>
-#include <wx/aboutdlg.h>
-#include <wx/cmdline.h>
-#include <wx/statline.h>
-#include <wx/hyperlink.h>
-#include <wx/evtloop.h>
-#include <wx/tipwin.h>
-#include <string>
-#include <vector>
-#include <map>
-
 #define VERSION			"0.7"
 #define APPNAME			"Very Sleepy"
 #define VENDORNAME		"codersnotes.com"

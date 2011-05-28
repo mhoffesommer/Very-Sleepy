@@ -21,17 +21,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 http://www.gnu.org/copyleft/gpl.html..
 =====================================================================*/
+#include <stdafx.h>
 #include "../wxprofilergui/profilergui.h"
 #include "profilerthread.h"
-#include <wx/wx.h>
-#include <wx/wfstream.h>
-#include <wx/zipstrm.h>
-#include <wx/txtstrm.h>
 
 #include "../utils/stringutils.h"
-#include <fstream>
-#include <assert.h>
-#include <algorithm>
 #include <Psapi.h>
 
 #pragma comment(lib, "winmm.lib")

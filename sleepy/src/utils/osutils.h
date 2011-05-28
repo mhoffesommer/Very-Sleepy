@@ -23,7 +23,6 @@ http://www.gnu.org/copyleft/gpl.html.
 #ifndef __OSUTILS_H_666_
 #define __OSUTILS_H_666_
 
-#include <windows.h>
 #include "wow64.h"
 
 int GetCPUCores();

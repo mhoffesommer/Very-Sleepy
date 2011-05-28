@@ -24,11 +24,6 @@ http://www.gnu.org/copyleft/gpl.html..
 #ifndef __THREADINFO_H_666_
 #define __THREADINFO_H_666_
 
-
-#include <windows.h>
-#include <string>
-
-
 /*=====================================================================
 ThreadInfo
 ----------

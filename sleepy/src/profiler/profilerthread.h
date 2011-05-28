@@ -32,7 +32,6 @@ http://www.gnu.org/copyleft/gpl.html..
 #include "symbolinfo.h"
 
 // DE: 20090325 Profiler thread now has a vector of threads to profile
-#include <vector>
 
 
 //convenience function; starts profiling the current thread.  Doesn't terminate target when finished.

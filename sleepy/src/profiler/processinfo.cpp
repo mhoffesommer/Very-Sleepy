@@ -21,10 +21,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 http://www.gnu.org/copyleft/gpl.html..
 =====================================================================*/
+#include <stdafx.h>
 #include "processinfo.h"
 
 #include "../utils/osutils.h"
-#include <windows.h>
 #include <tlhelp32.h>
 
 ProcessInfo::ProcessInfo(DWORD id_, const std::string& name_, HANDLE process_handle_)

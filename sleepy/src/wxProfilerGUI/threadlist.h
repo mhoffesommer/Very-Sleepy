@@ -29,7 +29,6 @@ http://www.gnu.org/copyleft/gpl.html.
 #include "../profiler/processinfo.h"
 #include "../utils/sortlist.h"
 
-#include <set>
 class SymbolInfo;
 
 /*=====================================================================

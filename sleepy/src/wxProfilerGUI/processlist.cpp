@@ -21,11 +21,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 http://www.gnu.org/copyleft/gpl.html.
 =====================================================================*/
+#include <stdafx.h>
 #include "processlist.h"
 #include "threadlist.h"
 #include "../profiler/symbolinfo.h"
 #include "../utils/osutils.h"
-#include <algorithm>
 
 BEGIN_EVENT_TABLE(ProcessList, wxListCtrl)
 EVT_LIST_ITEM_SELECTED(PROCESS_LIST, ProcessList::OnSelected)

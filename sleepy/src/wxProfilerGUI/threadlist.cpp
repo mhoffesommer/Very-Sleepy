@@ -21,12 +21,12 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 http://www.gnu.org/copyleft/gpl.html.
 =====================================================================*/
+#include <stdafx.h>
 #include "threadList.h"
 #include "database.h"
 #include "../profiler/profiler.h"
 #include "../profiler/symbolinfo.h"
 #include "../utils/osutils.h"
-#include <algorithm>
 
 #define UPDATE_DELAY 1000	 // 1 second interval
 

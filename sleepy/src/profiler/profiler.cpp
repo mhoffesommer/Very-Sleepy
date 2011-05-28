@@ -21,14 +21,13 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 http://www.gnu.org/copyleft/gpl.html..
 =====================================================================*/
+#include <stdafx.h>
 #include "profiler.h"
 
 
 #include "../utils/stringutils.h"
 #include "../utils/osutils.h"
 #include <process.h>
-#include <iostream>
-#include <assert.h>
 #include <winnt.h>
 #include <dbghelp.h>
 

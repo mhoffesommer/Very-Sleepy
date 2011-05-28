@@ -32,11 +32,6 @@ http://www.gnu.org/copyleft/gpl.html.
 #pragma warning(disable:4786)
 //disable long name warning
 
-#include <string>
-#include <assert.h>
-#include <vector>
-#include <sstream>
-
 
 inline float stringToFloat(const std::string& s)
 {

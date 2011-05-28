@@ -24,8 +24,6 @@ http://www.gnu.org/copyleft/gpl.html.
 #ifndef __LINEINFO_H_666_
 #define __LINEINFO_H_666_
 
-#include <map>
-
 /*=====================================================================
 LineInfo
 --------

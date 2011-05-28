@@ -27,13 +27,6 @@ http://www.gnu.org/copyleft/gpl.html..
 
 #pragma warning(disable : 4786)//disable long debug name warning
 
-
-#include <windows.h>
-#include <map>
-#include <iostream>
-#include <string>
-#include <vector>
-
 //64 bit mode:
 #if defined(_WIN64)
 typedef unsigned long long PROFILER_ADDR;
