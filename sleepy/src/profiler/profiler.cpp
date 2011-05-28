@@ -175,12 +175,18 @@ bool Profiler::sampleTarget(SAMPLE_TYPE timeSpent)
 	
 	SetThreadPriority(target_thread, THREAD_PRIORITY_TIME_CRITICAL);
 	result = GetThreadContext(target_thread, &threadcontext);
+	DWORD error = GetLastError();
 	SetThreadPriority(target_thread, prev_priority);
 
-
-	if(!result){
+	if(!result)
+	{
 		// DE: 20090325: If GetThreadContext fails we must be sure to resume thread again
 		ResumeThread(target_thread);
+		if (error==ERROR_GEN_FAILURE)
+		{
+			// happens sporadically - ignore
+			return false;
+		}
 		throw ProfilerExcep("GetThreadContext failed.");
 	}
 
