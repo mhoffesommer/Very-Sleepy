@@ -320,36 +320,27 @@ AttachInfo::~AttachInfo()
 {
 }
 
-AttachInfo *ProfilerGUI::RunProcess(std::string run_cmd,std::string run_cwd)
+AttachInfo *ProfilerGUI::RunProcess(std::string run_cmd, std::string run_cwd)
 {
-	char *cmdName = strdup(run_cmd.c_str());
-	char *cmdCwd = NULL;
-	if(run_cwd.size()) {
-		cmdCwd = strdup(run_cwd.c_str());
-	}
 	STARTUPINFO si;
 	PROCESS_INFORMATION pi;
 	ZeroMemory( &si, sizeof(si) );
 	ZeroMemory( &pi, sizeof(pi) );
 	si.cb = sizeof(si);
 
-	if ( !CreateProcess( NULL, cmdName, NULL, NULL, FALSE, CREATE_SUSPENDED, NULL, cmdCwd, &si, &pi ) )
+	if ( !CreateProcess( NULL, (LPSTR)run_cmd.c_str(), NULL, NULL, FALSE, CREATE_SUSPENDED, NULL, run_cwd.empty()?NULL:run_cwd.c_str(), &si, &pi ) )
 	{
-		free(cmdName);
 		wxLogSysError( "Unable to launch process" );
 		return NULL;
 	}
-
-	free(cmdName);
-	if(cmdCwd) {
-		free(cmdCwd);
+	else
+	{
+		AttachInfo *output = new AttachInfo;
+		output->process_handle = pi.hProcess;
+		output->thread_handles.push_back(pi.hThread);
+		output->suspended = true;
+		return output;
 	}
-
-	AttachInfo *output = new AttachInfo;
-	output->process_handle = pi.hProcess;
-	output->thread_handles.push_back(pi.hThread);
-	output->suspended = true;
-	return output;
 }
 
 bool ProfilerGUI::LoadProfileData(const std::string &filename)
