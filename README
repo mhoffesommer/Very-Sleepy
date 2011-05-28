@@ -2,3 +2,28 @@ This is a copy of the code found at http://www.codersnotes.com/sleepy.
 
 Base version is 0.7 - 10.13.2010 (in /sleepy).
 wxMSW 2.8.11 is inside /wxwindows (without the demos/samples/tests directories).
+
+
+Initial build
+=============
+
+Easy
+----
+Run one of the easy_build batch files.
+
+wxwidgets
+---------
+Run C:\Program Files\Microsoft Visual Studio 9.0\VC\bin\vcvcars32.bat
+   (or vcvarsx86_amd64.bat for a 64-bit cross-compile)
+   (or vcvars64.bat for a regular 64-bit build)
+Now, from the wxwindows\build\msw directory:
+
+   nmake -f makefile.vc BUILD=debug SHARED=0 RUNTIME_LIBS=static
+
+For a release build, use BUILD=release instead
+For 64-bit, add TARGET_CPU=AMD64
+
+very sleepy
+-----------
+load sleepy/sleepy.sln
+compile either debug or release
