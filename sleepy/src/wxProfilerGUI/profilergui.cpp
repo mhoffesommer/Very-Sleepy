@@ -51,6 +51,7 @@ static const wxCmdLineEntryDesc g_cmdLineDesc[] =
 	{ wxCMD_LINE_OPTION, "o", "", "Saves the captured profile to the given file.",			wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL|wxCMD_LINE_NEEDS_SEPARATOR },
 	{ wxCMD_LINE_OPTION, "t", "", "Stops capturing automatically after N seconds time.",	wxCMD_LINE_VAL_NUMBER, wxCMD_LINE_PARAM_OPTIONAL },
 	{ wxCMD_LINE_SWITCH, "q", "", "Quiet mode (no error messages will be shown).",			wxCMD_LINE_VAL_NONE },
+	{ wxCMD_LINE_SWITCH, "p", "", "Start with sampling initially paused.",					wxCMD_LINE_VAL_NONE },
 	{ wxCMD_LINE_PARAM, NULL, NULL, "Loads an existing profile from a file.",				wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL},
 
 	{ wxCMD_LINE_NONE }
@@ -455,6 +456,7 @@ bool ProfilerGUI::OnCmdLineParsed(wxCmdLineParser& parser)
 
 	if (parser.Found("q"))
 		wxLog::EnableLogging(false);
+	ProfilerThread::setPaused(parser.Found("p"));
 
 	if (parser.Found("r") && parser.Found("i"))
 	{
