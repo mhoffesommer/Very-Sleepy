@@ -30,6 +30,7 @@ http://www.gnu.org/copyleft/gpl.html..
 
 #pragma comment(lib, "winmm.lib")
 
+volatile bool	ProfilerThread::m_paused;
 
 void startProfiling(int num_samples)
 {
@@ -155,7 +156,7 @@ void ProfilerThread::sampleLoop()
 	QueryPerformanceCounter(&prev);
 	
 	while(!this->commit_suicide)
-		{
+	{
 		Sleep(1);
 
 		QueryPerformanceCounter(&now);
@@ -163,7 +164,10 @@ void ProfilerThread::sampleLoop()
 		__int64 diff = now.QuadPart - prev.QuadPart;
 		double t = (double)diff / (double)freq.QuadPart;
 
-		sample(t);
+		if (!m_paused)
+		{
+			sample(t);
+		}
 		
 		prev = now;
 	}

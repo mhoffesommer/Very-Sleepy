@@ -22,10 +22,12 @@ http://www.gnu.org/copyleft/gpl.html.
 =====================================================================*/
 #include <stdafx.h>
 #include "capturewin.h"
+#include "../profiler/profilerthread.h"
 
 BEGIN_EVENT_TABLE(CaptureWin, wxDialog)
-EVT_BUTTON(wxID_OK, CaptureWin::OnOk)
-EVT_BUTTON(wxID_CANCEL, CaptureWin::OnCancel)
+	EVT_CHECKBOX(CaptureWin::ID_PAUSE,CaptureWin::OnPause)
+	EVT_BUTTON(wxID_OK, CaptureWin::OnOk)
+	EVT_BUTTON(wxID_CANCEL, CaptureWin::OnCancel)
 END_EVENT_TABLE()
 
 CaptureWin::CaptureWin()
@@ -48,6 +50,11 @@ CaptureWin::CaptureWin()
 	int border = ConvertDialogToPixels(wxSize(2, 0)).x;
 	wxSizer *buttons = new wxBoxSizer(wxHORIZONTAL);
 	buttons->AddStretchSpacer();
+
+	wxCheckBox *paused=new wxCheckBox(panel,ID_PAUSE,"Pause sampling");
+	paused->SetValue(ProfilerThread::isPaused());
+	buttons->Add(paused,0);
+
 	buttons->Add(new wxButton(panel, wxID_OK),					0, wxALIGN_RIGHT | wxLEFT|wxRIGHT,	border);
 	buttons->Add(new wxButton(panel, wxID_CANCEL),				0, wxALIGN_RIGHT | wxLEFT,			border);
 
@@ -96,4 +103,9 @@ void CaptureWin::OnCancel(wxCommandEvent& event)
 {
 	cancelled = true;
 	stopped = true;
+}
+
+void CaptureWin::OnPause(wxCommandEvent& event)
+{
+	ProfilerThread::setPaused(event.IsChecked());
 }

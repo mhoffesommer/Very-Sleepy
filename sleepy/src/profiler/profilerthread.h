@@ -69,6 +69,9 @@ public:
 
 	virtual ~ProfilerThread();
 
+	// pause/resume profiling
+	static void setPaused(bool p) { m_paused=p; }
+	static bool isPaused() { return m_paused; }
 
 	//call this to start profiling.
 	virtual void run();
@@ -102,6 +105,7 @@ private:
 	HANDLE target_process;
 	std::string filename;
 	SymbolInfo sym_info;
+	static volatile bool	m_paused;	// profiling paused?
 };
 
 

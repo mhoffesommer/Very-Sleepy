@@ -35,9 +35,15 @@ public:
 
 	bool Cancelled() { return cancelled; }
 
+	enum
+	{
+		ID_PAUSE=1,
+	};
+
 private:
 	void OnOk( wxCommandEvent & event );
 	void OnCancel( wxCommandEvent & event );
+	void OnPause(wxCommandEvent &);
 
 	bool cancelled, stopped;
 	wxGauge *progressBar;
