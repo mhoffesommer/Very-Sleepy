@@ -307,8 +307,8 @@ void ProfilerThread::saveData()
 		txt << "\n";
 	}
 
-	zip.PutNextEntry(_T("Version " VERSION " required"));
-	txt << VERSION << "\n";
+	zip.PutNextEntry(_T("Version " FILE_VERSION " required"));
+	txt << FILE_VERSION << "\n";
 
 
 	if (!out.IsOk() || !zip.IsOk())
