@@ -203,15 +203,16 @@ void ProfilerGUI::ShowAboutBox()
 	info.AddDeveloper("Nicholas Chapman");
 	info.AddDeveloper("Dan Engelbrecht");
 	info.AddDeveloper("Johan Köhler");
+	info.AddDeveloper("Martin Hoffesommer");
 	info.SetCopyright(_T(
-		"© 2005-2010    Nicholas Chapman, Richard Mitton, and additional authors listed above.\n"
+		"© 2005-2011    Nicholas Chapman, Richard Mitton, and additional authors listed above.\n"
 		"\n"
 		"All rights reserved.\n"
 		"\n"
 		"This program is released under the GNU Public License.\n"
 		"See LICENSE.TXT for more information."
 		));
-	info.SetWebSite(_T("http://www.codersnotes.com/sleepy"), _T("Very Sleepy web site"));
+	info.SetWebSite(_T("https://github.com/mhoffesommer/Very-Sleepy"), _T("github repository"));
 
 	AboutDlg dlg(info);
 	dlg.ShowModal();
