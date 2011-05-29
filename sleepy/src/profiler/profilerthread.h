@@ -100,7 +100,7 @@ private:
 	//int numsamples;
 	int numsamplessofar;
 	int numThreadsRunning;
-	int symbolsPercent;
+	volatile int symbolsPercent;
 	bool failed;
 	HANDLE target_process;
 	std::string filename;

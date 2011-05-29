@@ -281,6 +281,7 @@ bool ProfilerGUI::LaunchProfiler(const AttachInfo *info, std::string &output_fil
 		while(true)
 		{
 			int percent = profilerthread->getSymbolsPercent();
+			dlg.Update(percent);
 			if (percent >= 100 || profilerthread->getFailed())
 				break;
 			WaitForSingleObject(profilerthread->getHandle(), 100);

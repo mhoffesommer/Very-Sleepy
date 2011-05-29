@@ -157,7 +157,7 @@ void ProfilerThread::sampleLoop()
 	
 	while(!this->commit_suicide)
 	{
-		Sleep(1);
+		Sleep(m_paused?1:0);
 
 		QueryPerformanceCounter(&now);
 
@@ -272,20 +272,15 @@ void ProfilerThread::saveData()
 			proc_name + " \"" + procfile + "\"" + " " + ::toString(proclinenum);
 
 		if (symbolidtable.find(full_proc_name) == symbolidtable.end())
+		{
+			txt << full_proc_name << "\n";
 			symbolidtable[full_proc_name] = numsymbols++;
+		}
 
 		symbols[addr] = symbolidtable[full_proc_name];
 
 		symbolsPercent = MulDiv(done, 100, used_total);
 		done++;
-	}
-
-	for(std::map<std::string, int>::const_iterator i = symbolidtable.begin(); i != symbolidtable.end(); ++i)
-	{
-		std::string str = i->first;
-		int id = i->second;
-
-		txt << "sym" << id << " " << str << "\n";
 	}
 
 	//------------------------------------------------------------------------
@@ -302,7 +297,7 @@ void ProfilerThread::saveData()
 		txt << count;
 		for( size_t d=0;d<callstack.depth;d++ )
 		{
-			txt << " sym" << symbols[callstack.addr[d]];
+			txt << " " << symbols[callstack.addr[d]];
 		}
 		txt << "\n";
 	}

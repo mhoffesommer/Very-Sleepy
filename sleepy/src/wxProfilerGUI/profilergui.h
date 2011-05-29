@@ -24,7 +24,7 @@ http://www.gnu.org/copyleft/gpl.html.
 #ifndef __PROFILERGUI_H_666_
 #define __PROFILERGUI_H_666_
 
-#define FILE_VERSION	"0.7"
+#define FILE_VERSION	"0.7.1"
 #define VERSION			"0.7.1(MH)"
 #define APPNAME			"Very Sleepy"
 #define VENDORNAME		"codersnotes.com"

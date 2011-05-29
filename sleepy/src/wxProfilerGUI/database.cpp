@@ -27,6 +27,7 @@ http://www.gnu.org/copyleft/gpl.html.
 #include "../utils/stringutils.h"
 #include "sourceview.h"
 #include "mainwin.h"
+#include <hash_map>
 
 Database *theDatabase;
 
@@ -84,9 +85,9 @@ Database::~Database()
 
 void Database::clear()
 {
-	for (std::map<std::string, Symbol *>::iterator i = symbols.begin(); i != symbols.end(); i++)
+	for (std::vector<Symbol *>::iterator i = symbols.begin(); i != symbols.end(); i++)
 	{
-		delete i->second;
+		delete *i;
 	}
 
 	symbols.clear();
@@ -133,7 +134,7 @@ bool Database::loadFromPath(const std::string& _profilepath, bool collapseOSCall
 
 			// Add other versions here any time the file format changes.
 			const char *supportedVersions[] = {
-				"0.7"
+				"0.7.1"
 			};
 
 			bool isSupported = false;
@@ -190,14 +191,13 @@ void Database::loadSymbols(wxInputStream &file)
 		std::istringstream stream(line.c_str());
 		Symbol *sym = new Symbol;
 
-		stream >> sym->id;
 		::readQuote(stream, sym->module);
 		::readQuote(stream, sym->procname);
 		::readQuote(stream, sym->sourcefile);
 		stream >> sym->sourceline;
 		sym->isCollapseFunction = osFunctions.Contains(sym->procname.c_str());
 		sym->isCollapseModule = osModules.Contains(sym->module.c_str());
-		symbols[sym->id] = sym;
+		symbols.push_back(sym);
 	}
 }
 
@@ -220,6 +220,8 @@ void Database::loadProcList(wxInputStream &file,bool collapseKernelCalls)
 
 	std::set<CallStackPtrComp> callstackSet;
 
+	CallStack callstack;
+	int k=0;
 	while(!file.Eof())
 	{
 		wxString line = str.ReadLine();
@@ -228,19 +230,18 @@ void Database::loadProcList(wxInputStream &file,bool collapseKernelCalls)
 
 		std::istringstream stream(line.c_str());
 
-		CallStack callstack;
+		callstack.stack.clear();
 		stream >> callstack.samplecount;
 
-		while(true)
+		while (!stream.eof())
 		{
-			std::string id;
-			stream >> id;
-			if (id.empty())
-				break;
+			int index;
+			stream >> index;
 
-			const Symbol *sym = symbols[id];
+			const Symbol *sym = symbols[index];
 
-			if(collapseKernelCalls && sym->isCollapseFunction) {
+			if(collapseKernelCalls && sym->isCollapseFunction) 
+			{
 				callstack.stack.clear();
 			}
 
@@ -267,9 +268,13 @@ void Database::loadProcList(wxInputStream &file,bool collapseKernelCalls)
 		callstacks.push_back(callstack);
 		callstackSet.insert(&callstacks[callstacks.size()-1]);
 
-		wxFileOffset offset = file.TellI();
-		if(offset != wxInvalidOffset)
-			progressdlg.Update(offset);
+		if (++k==100)
+		{
+			wxFileOffset offset = file.TellI();
+			if(offset != wxInvalidOffset)
+				progressdlg.Update(offset);
+			k=0;
+		}
 	}
 }
 
@@ -334,11 +339,14 @@ void Database::scanRoot()
 	rootList.items.clear();
 	rootList.totalcount = 0;
 
+	stdext::hash_map<const Symbol *, bool> seen;
+
 	int progress = 0;
 	for (std::deque<CallStack>::const_iterator i = callstacks.begin(); i != callstacks.end(); i++)
 	{  
 		exclusive[i->stack[0]] += i->samplecount;
-		std::map<const Symbol *, bool> seen;
+
+		seen.clear();
 		for (size_t n=0;n<i->stack.size();n++)
 		{
 			// we filter out duplicates, to avoid getting funny numbers when 
@@ -351,7 +359,11 @@ void Database::scanRoot()
 		}
 		rootList.totalcount += i->samplecount;
 
-		progressdlg.Update(progress++);
+		++progress;
+		if (!(progress%100))
+		{
+			progressdlg.Update(progress);
+		}
 	}
 
 	for (std::map<const Symbol *, double>::const_iterator i = inclusive.begin(); i != inclusive.end(); i++)

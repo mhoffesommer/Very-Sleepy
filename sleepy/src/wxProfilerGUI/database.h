@@ -46,7 +46,6 @@ class Database
 public:
 	struct Symbol
 	{
-		std::string id;
 		std::string module;
 		std::string procname;
 		std::string sourcefile;
@@ -94,7 +93,7 @@ public:
 	std::string getProfilePath() const { return profilepath; }
 
 private:
-	std::map<std::string, Symbol *> symbols;
+	std::vector<Symbol *> symbols;
 	std::deque<CallStack> callstacks;
 	std::map<std::string, LINEINFOMAP > fileinfo;
 	List rootList;
