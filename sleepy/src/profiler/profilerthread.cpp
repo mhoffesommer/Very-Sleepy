@@ -268,8 +268,10 @@ void ProfilerThread::saveData()
 		PROFILER_ADDR addr = i->first;
 
 		const std::string proc_name = "\"" + sym_info.getProcForAddr(addr, procfile, proclinenum) + "\"";
-		const std::string full_proc_name = "\"" + sym_info.getModuleNameForAddr(addr) + "\" " + 
-			proc_name + " \"" + procfile + "\"" + " " + ::toString(proclinenum);
+		std::string full_proc_name = "\"";
+		full_proc_name+= sym_info.getModuleNameForAddr(addr);
+		full_proc_name+= "\" ";
+		full_proc_name+= proc_name + " \"" + procfile + "\"" + " " + ::toString(proclinenum);
 
 		if (symbolidtable.find(full_proc_name) == symbolidtable.end())
 		{

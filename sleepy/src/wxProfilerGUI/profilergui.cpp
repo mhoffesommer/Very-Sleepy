@@ -55,6 +55,9 @@ static const wxCmdLineEntryDesc g_cmdLineDesc[] =
 #ifndef _WIN64
 	{ wxCMD_LINE_SWITCH, "f", "", "Use fast (non-FPO aware) stack walker.",					wxCMD_LINE_VAL_NONE },
 #endif
+	{ wxCMD_LINE_OPTION, "s", "", "Override symbol path.",									wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL|wxCMD_LINE_NEEDS_SEPARATOR },
+	{ wxCMD_LINE_SWITCH, "S", "", "Set symbol path (SRV*c:\\websymbols*http://msdl.microsoft.com/download/symbols).",
+																							wxCMD_LINE_VAL_NONE },
 	{ wxCMD_LINE_PARAM, NULL, NULL, "Loads an existing profile from a file.",				wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL},
 
 	{ wxCMD_LINE_NONE }
@@ -463,6 +466,14 @@ bool ProfilerGUI::OnCmdLineParsed(wxCmdLineParser& parser)
 		wxLog::EnableLogging(false);
 	ProfilerThread::setPaused(parser.Found("p"));
 	Profiler::setUseFastStackWalk(parser.Found("f"));
+	if (parser.Found("s",&param))
+	{
+		SymbolInfo::setSymbolPath(param.c_str());
+	}
+	if (parser.Found("S"))
+	{
+		SymbolInfo::setSymbolPath("SRV*c:\\websymbols*http://msdl.microsoft.com/download/symbols");
+	}
 
 	if (parser.Found("r") && parser.Found("i"))
 	{

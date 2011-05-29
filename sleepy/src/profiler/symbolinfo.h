@@ -24,16 +24,7 @@ http://www.gnu.org/copyleft/gpl.html..
 #ifndef __SYMBOLINFO_H_666_
 #define __SYMBOLINFO_H_666_
 
-
 #include "profiler.h"
-
-class Module
-{
-public:
-	Module(PROFILER_ADDR base_addr_, const std::string& name_) { base_addr = base_addr_; name = name_; }
-	PROFILER_ADDR base_addr;
-	std::string name;
-};
 
 class SymbolInfoExcep
 {
@@ -54,38 +45,31 @@ Wrapper around some DbgHelp API stuff.
 class SymbolInfo
 {
 public:
-	/*=====================================================================
-	SymbolInfo
-	----------
-	
-	=====================================================================*/
 	SymbolInfo();
-
 	~SymbolInfo();
+
+	static void setSymbolPath(const char *p) { m_symPath=p; }
 
 	void loadSymbols(HANDLE process_handle);//throws SymbolInfoExcep
 
-	const std::string getModuleNameForAddr(PROFILER_ADDR addr);
+	const char* getModuleNameForAddr(PROFILER_ADDR addr) const;
 
-	//get proc name for mem address
-	const std::string getProcForAddr(PROFILER_ADDR addr, std::string& procfilepath_out, int& proclinenum_out);
+	// get proc name for mem address
+	const std::string getProcForAddr(PROFILER_ADDR addr, std::string& procfilepath_out, int& proclinenum_out) const;
 
-
-	void getLineForAddr(PROFILER_ADDR addr, std::string& filepath_out, int& linenum_out);
-
-
-	// For internal use.
-	void addModule(const Module& module);
-	// For internal use. Sort modules by increasing base address.
-	void sortModules();
-	HANDLE process_handle;
+	void getLineForAddr(PROFILER_ADDR addr, std::string& filepath_out, int& linenum_out) const;
 
 private:
-	std::vector<Module> modules;
-	bool is64BitProcess;
+	SymbolInfo(const SymbolInfo&);
+	SymbolInfo& operator=(const SymbolInfo&);
+
+	std::map<PROFILER_ADDR,std::string>	m_base2module;
+	bool								m_is64BitProcess;
+	HANDLE								m_processHandle;
+	static std::string					m_symPath;
+
+	static BOOL CALLBACK EnumModules(PCSTR ModuleName, DWORD64 BaseOfDll, PVOID UserContext);
 };
-
-
 
 #endif //__SYMBOLINFO_H_666_
 
