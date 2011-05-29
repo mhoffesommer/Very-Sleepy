@@ -110,8 +110,11 @@ public:
 	//void saveIPs(std::ostream& stream);//write IP values to a stream
 
 	HANDLE getTarget(){ return target_thread; }
+	static void setUseFastStackWalk(bool on) { m_useFastStackWalk=on; }
+
 private:
 	HANDLE target_process, target_thread;
+	static bool	m_useFastStackWalk;
 };
 
 

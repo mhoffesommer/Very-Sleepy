@@ -31,7 +31,9 @@ http://www.gnu.org/copyleft/gpl.html..
 #include <winnt.h>
 #include <dbghelp.h>
 
-// DE: 20090325: Profiler no longer owns callstack and flatcounts since it is shared between multipler profilers
+bool Profiler::m_useFastStackWalk=false;
+
+// DE: 20090325: Profiler no longer owns callstack and flatcounts since it is shared between multiple profilers
 
 Profiler::Profiler(HANDLE target_process_, HANDLE target_thread_, std::map<CallStack, SAMPLE_TYPE>& callstacks_, std::map<PROFILER_ADDR, SAMPLE_TYPE>& flatcounts_)
 :	target_process(target_process_),
@@ -190,41 +192,59 @@ bool Profiler::sampleTarget(SAMPLE_TYPE timeSpent)
 		throw ProfilerExcep("GetThreadContext failed.");
 	}
 
-#if defined(_WIN64)
-	stack.addr[stack.depth++] = threadcontext.Rip;
-	frame.AddrStack.Offset = threadcontext.Rsp;
-	frame.AddrPC.Offset = threadcontext.Rip;
-	frame.AddrFrame.Offset = threadcontext.Rbp;
-	frame.AddrStack.Mode = frame.AddrPC.Mode = frame.AddrFrame.Mode = AddrModeFlat;
-#else
-	stack.addr[stack.depth++] = threadcontext.Eip;
-	frame.AddrStack.Offset = threadcontext.Esp;
-	frame.AddrPC.Offset = threadcontext.Eip;
-	frame.AddrFrame.Offset = threadcontext.Ebp;
-	frame.AddrStack.Mode = frame.AddrPC.Mode = frame.AddrFrame.Mode = AddrModeFlat;
-#endif
-	while(true)
+#ifndef _WIN64
+	if (m_useFastStackWalk)
 	{
-		BOOL result = StackWalk64(
-#if defined(_WIN64)
-			IMAGE_FILE_MACHINE_AMD64,
-#else
-			IMAGE_FILE_MACHINE_I386,
+		// use non-FPO aware fast stack walker
+		stack.addr[stack.depth++] = threadcontext.Eip;
+		PROFILER_ADDR _ebp=(PROFILER_ADDR)threadcontext.Ebp;
+		while (_ebp&&stack.depth<MAX_CALLSTACK_LEVELS)
+		{
+			PROFILER_ADDR help[2];
+			ReadProcessMemory(target_process,(void *)_ebp,help,8,NULL);
+			stack.addr[stack.depth++]=help[1];
+			_ebp=help[0];
+		}
+	}
+	else
 #endif
-			target_process,
-			target_thread,
-			&frame,
-			&threadcontext,
-			NULL,
-			&SymFunctionTableAccess64,
-			&SymGetModuleBase64,
-			NULL
-		);
+	{
+#if defined(_WIN64)
+		stack.addr[stack.depth++] = threadcontext.Rip;
+		frame.AddrStack.Offset = threadcontext.Rsp;
+		frame.AddrPC.Offset = threadcontext.Rip;
+		frame.AddrFrame.Offset = threadcontext.Rbp;
+		frame.AddrStack.Mode = frame.AddrPC.Mode = frame.AddrFrame.Mode = AddrModeFlat;
+#else
+		stack.addr[stack.depth++] = threadcontext.Eip;
+		frame.AddrStack.Offset = threadcontext.Esp;
+		frame.AddrPC.Offset = threadcontext.Eip;
+		frame.AddrFrame.Offset = threadcontext.Ebp;
+		frame.AddrStack.Mode = frame.AddrPC.Mode = frame.AddrFrame.Mode = AddrModeFlat;
+#endif
+		while(true)
+		{
+			BOOL result = StackWalk64(
+#if defined(_WIN64)
+				IMAGE_FILE_MACHINE_AMD64,
+#else
+				IMAGE_FILE_MACHINE_I386,
+#endif
+				target_process,
+				target_thread,
+				&frame,
+				&threadcontext,
+				NULL,
+				&SymFunctionTableAccess64,
+				&SymGetModuleBase64,
+				NULL
+			);
 
-		if (!result || stack.depth >= MAX_CALLSTACK_LEVELS || frame.AddrReturn.Offset == 0)
-			break;
+			if (!result || stack.depth >= MAX_CALLSTACK_LEVELS || frame.AddrReturn.Offset == 0)
+				break;
 
-		stack.addr[stack.depth++] = (PROFILER_ADDR)frame.AddrReturn.Offset;
+			stack.addr[stack.depth++] = (PROFILER_ADDR)frame.AddrReturn.Offset;
+		}
 	}
 
 	//std::cout << "addr: " << addr << std::endl;
