@@ -3,3 +3,7 @@
 /wxwindows/build/msw/vc_mswd
 /wxwindows/build/msw/vc_msw
 /wxwindows/lib/vc_lib
+/test/Release
+/test/Debug
+/sleepy/Debug
+/sleepy/Release
