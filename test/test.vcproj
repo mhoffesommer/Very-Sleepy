@@ -166,6 +166,10 @@
 	</References>
 	<Files>
 		<File
+			RelativePath="..\api\sleepy_api.cpp"
+			>
+		</File>
+		<File
 			RelativePath=".\test.cpp"
 			>
 		</File>

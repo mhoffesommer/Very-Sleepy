@@ -23,6 +23,7 @@ http://www.gnu.org/copyleft/gpl.html.
 #include <stdafx.h>
 #include "capturewin.h"
 #include "../profiler/profilerthread.h"
+#include "../apiserver.h"
 
 BEGIN_EVENT_TABLE(CaptureWin, wxDialog)
 	EVT_CHECKBOX(CaptureWin::ID_PAUSE,CaptureWin::OnPause)
@@ -51,9 +52,9 @@ CaptureWin::CaptureWin()
 	wxSizer *buttons = new wxBoxSizer(wxHORIZONTAL);
 	buttons->AddStretchSpacer();
 
-	wxCheckBox *paused=new wxCheckBox(panel,ID_PAUSE,"Pause sampling");
-	paused->SetValue(ProfilerThread::isPaused());
-	buttons->Add(paused,0);
+	m_paused=new wxCheckBox(panel,ID_PAUSE,"Pause sampling");
+	m_paused->SetValue(ProfilerThread::isPaused());
+	buttons->Add(m_paused,0);
 
 	buttons->Add(new wxButton(panel, wxID_OK),					0, wxALIGN_RIGHT | wxLEFT|wxRIGHT,	border);
 	buttons->Add(new wxButton(panel, wxID_CANCEL),				0, wxALIGN_RIGHT | wxLEFT,			border);
@@ -74,10 +75,14 @@ CaptureWin::CaptureWin()
 
 	SetSize(wxSize(300, 160));
 	Centre();
+
+	m_apiServer=new ApiServer;
+	m_apiServer->Create();
 }
 
 CaptureWin::~CaptureWin()
 {
+	delete m_apiServer;
 }
 
 bool CaptureWin::UpdateProgress(int numSamples, int numThreads)
@@ -87,6 +92,11 @@ bool CaptureWin::UpdateProgress(int numSamples, int numThreads)
 	progressText->SetLabel(tmp);
 
 	progressBar->Pulse();
+
+	if (m_paused->GetValue()!=ProfilerThread::isPaused())
+	{
+		m_paused->SetValue(ProfilerThread::isPaused());
+	}
 
 	Update();
 	wxYieldIfNeeded();

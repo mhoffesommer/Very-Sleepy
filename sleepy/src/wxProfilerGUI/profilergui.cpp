@@ -76,7 +76,6 @@ ProfilerGUI::ProfilerGUI()
 
 ProfilerGUI::~ProfilerGUI()
 {
-
 }
 
 

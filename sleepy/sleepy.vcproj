@@ -346,6 +346,14 @@
 			Name="profiler"
 			>
 			<File
+				RelativePath=".\src\apiserver.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\apiserver.h"
+				>
+			</File>
+			<File
 				RelativePath=".\src\profiler\processinfo.cpp"
 				>
 			</File>
@@ -535,6 +543,34 @@
 			</File>
 			<File
 				RelativePath=".\src\wxProfilerGUI\threadpicker.h"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="api"
+			>
+			<File
+				RelativePath="..\api\sleepy_api.cpp"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\api\sleepy_api.h"
 				>
 			</File>
 		</Filter>

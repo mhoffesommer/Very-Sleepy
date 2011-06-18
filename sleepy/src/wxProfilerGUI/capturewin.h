@@ -25,6 +25,8 @@ http://www.gnu.org/copyleft/gpl.html.
 
 #include "profilergui.h"
 
+class ApiServer;
+
 class CaptureWin : public wxDialog
 {
 public:
@@ -49,6 +51,9 @@ private:
 	wxGauge *progressBar;
 	wxStaticText *progressText;
 	wxStopWatch stopwatch;
+
+	wxCheckBox	*m_paused;
+	ApiServer	*m_apiServer;
 
 	DECLARE_EVENT_TABLE()
 };
